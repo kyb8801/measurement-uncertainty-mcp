@@ -14,7 +14,26 @@ import math
 from typing import Callable, Sequence
 
 import numpy as np
-from scipy import stats
+
+# Scipy is imported lazily — it adds ~700–900 ms to module import on cold-start
+# Cloud Run instances because of its compiled extensions and lazy dependency
+# graph. Type A / Type B / combine_uncertainty / welch_satterthwaite don't need
+# it at all; only expanded_uncertainty uses scipy.stats for t/normal quantiles.
+# See issue #4.
+_stats = None  # populated by _get_stats() on first use
+
+
+def _get_stats():
+    """Lazy scipy.stats accessor.
+
+    Returns the same module object on repeated calls within a warm instance,
+    so the ~700–900 ms import cost is paid at most once per process.
+    """
+    global _stats
+    if _stats is None:
+        from scipy import stats as _scipy_stats  # noqa: WPS433 — intentional lazy import
+        _stats = _scipy_stats
+    return _stats
 
 
 # --- Data structures --------------------------------------------------------
@@ -178,6 +197,7 @@ def expanded_uncertainty(
     if confidence <= 0 or confidence >= 1:
         raise ValueError("confidence must be in (0, 1)")
     alpha = 1.0 - confidence
+    stats = _get_stats()  # lazy scipy import — see issue #4
     if math.isfinite(effective_dof):
         k = float(stats.t.ppf(1 - alpha / 2, df=effective_dof))
     else:
