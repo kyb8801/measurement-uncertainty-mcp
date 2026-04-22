@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "measurement-uncertainty-mcp"
+version = "0.1.0"
+description = "GUM-compliant measurement uncertainty analysis as an MCP server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "YB", email = "kyb8801@gmail.com" }]
+keywords = ["mcp", "metrology", "uncertainty", "GUM", "calibration", "semiconductor"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "numpy>=1.24",
+    "scipy>=1.11",
+]
+
+[project.scripts]
+measurement-uncertainty-mcp = "measurement_uncertainty_mcp.__main__:main"
+
+[project.urls]
+Homepage = "https://mcpize.com/servers/measurement-uncertainty"
+Issues = "https://github.com/kyb8801/measurement-uncertainty-mcp/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
