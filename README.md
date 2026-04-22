@@ -1,5 +1,10 @@
 # measurement-uncertainty-mcp
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![MCP Compatible](https://img.shields.io/badge/MCP-compatible-green.svg)](https://modelcontextprotocol.io)
+[![GitHub stars](https://img.shields.io/github/stars/kyb8801/measurement-uncertainty-mcp?style=social)](https://github.com/kyb8801/measurement-uncertainty-mcp/stargazers)
+
 **The first Model Context Protocol server for GUM-compliant measurement uncertainty analysis.**
 
 Built for AI engineers, metrologists, and semiconductor equipment teams who need to compute Type A/B uncertainties, combined standard uncertainty, effective degrees of freedom, and expanded uncertainty directly from their LLM assistant — without leaving chat or switching to a spreadsheet.
