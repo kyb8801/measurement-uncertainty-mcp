@@ -3,11 +3,14 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-green.svg)](https://modelcontextprotocol.io)
+[![MCPize](https://mcpize.com/badge/@kyb8801/measurement-uncertainty)](https://mcpize.com/mcp/measurement-uncertainty)
 [![GitHub stars](https://img.shields.io/github/stars/kyb8801/measurement-uncertainty-mcp?style=social)](https://github.com/kyb8801/measurement-uncertainty-mcp/stargazers)
 
 **The first Model Context Protocol server for GUM-compliant measurement uncertainty analysis.**
 
 Built for AI engineers, metrologists, and semiconductor equipment teams who need to compute Type A/B uncertainties, combined standard uncertainty, effective degrees of freedom, and expanded uncertainty directly from their LLM assistant — without leaving chat or switching to a spreadsheet.
+
+Now live on MCPize: **https://measurement-uncertainty.mcpize.run**
 
 ## What this server does
 
@@ -36,28 +39,39 @@ The Python library also ships a `propagate(formula, estimates, components)` help
 
 Because uncertainty analysis is **recurring, high-value, and inherently metered** — a calibration lab runs these calculations 50–500 times per month. That's a subscription, not a one-time script purchase. And because the GUM is standards-referenceable but notoriously error-prone when implemented by non-metrologists, the value here is **correctness-as-a-service**, not code.
 
-## Pricing (planned)
+## Quickstart — hosted (no install)
 
-- **Free tier**: 50 calls / month, `type_a_uncertainty` + `type_b_*` only
-- **Pro tier ($29/mo)**: unlimited, full toolset, `propagate` enabled, JSON and LaTeX export
-- **Team tier ($99/mo)**: Pro + audit log, shared uncertainty-budget templates, support response ≤ 48h
+Connect your MCP client directly to the live Cloud Run endpoint via MCPize. No Python, no dependencies, no config.
 
-MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
+### Claude Desktop / Cursor / Windsurf / Cline (one-line)
 
-## Status
+```bash
+npx -y mcpize connect @kyb8801/measurement-uncertainty --client claude
+```
 
-- [x] Server skeleton
-- [x] Tool definitions (8 tools, JSON Schema)
-- [x] Math kernel (imports from `gumroad_products/python_data_analysis/05_uncertainty_analysis.py`)
-- [ ] MCPize deployment config
-- [ ] Public beta (target: 2026-04-28)
-- [ ] First paid subscriber (target: 2026-05-10)
+Replace `--client claude` with `cursor`, `windsurf`, or `cline` as needed.
 
-## Differentiation
+### Claude Code CLI
 
-Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrology`, `calibration`, `GUM`, `measurement`. **Zero results.** This is first-mover territory in a niche that has ~10,000 paying professionals globally.
+```bash
+claude mcp add --transport http "Measurement Uncertainty" https://measurement-uncertainty.mcpize.run
+```
 
-## Quickstart (60 seconds)
+### Manual config (`claude_desktop_config.json`)
+
+```json
+{
+  "mcpServers": {
+    "Measurement Uncertainty": {
+      "url": "https://measurement-uncertainty.mcpize.run"
+    }
+  }
+}
+```
+
+## Quickstart — local install (60 seconds)
+
+For airgapped labs, offline use, or if you'd rather run locally:
 
 ```bash
 # 1. Clone and install
@@ -69,9 +83,7 @@ pip install -e .
 measurement-uncertainty-mcp
 ```
 
-## Claude Desktop config snippet
-
-Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`
+Then add this to `~/Library/Application Support/Claude/claude_desktop_config.json`
 (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 
 ```json
@@ -88,6 +100,29 @@ Add this to `~/Library/Application Support/Claude/claude_desktop_config.json`
 Restart Claude Desktop, then ask:
 
 > "Compute the Type A uncertainty for these 10 CD-SEM measurements: 45.12, 45.08, 45.15, 45.11, 45.09, 45.13, 45.10, 45.14, 45.07, 45.12 nm. Report u, ν, and the expanded uncertainty at k=2."
+
+## Pricing (planned)
+
+- **Free tier**: 50 calls / month, `type_a_uncertainty` + `type_b_*` only
+- **Pro tier ($29/mo)**: unlimited, full toolset, `propagate` enabled, JSON and LaTeX export
+- **Team tier ($99/mo)**: Pro + audit log, shared uncertainty-budget templates, support response ≤ 48h
+
+MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
+
+## Status
+
+- [x] Server skeleton
+- [x] Tool definitions (7 tools, JSON Schema)
+- [x] Math kernel (imports from `gumroad_products/python_data_analysis/05_uncertainty_analysis.py`)
+- [x] MCPize deployment (live at `measurement-uncertainty.mcpize.run`, 2026-04-22)
+- [x] Public beta — 7 tools discovered and callable
+- [ ] First paid subscriber (target: 2026-05-10)
+- [ ] Monte Carlo uncertainty propagation module (GUM Supplement 1, target: 2026-05)
+- [ ] Uncertainty-budget template library (calibration lab standard budgets)
+
+## Differentiation
+
+Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrology`, `calibration`, `GUM`, `measurement`. **Zero results.** This is first-mover territory in a niche that has ~10,000 paying professionals globally.
 
 ## Testing
 
