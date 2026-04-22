@@ -9,18 +9,20 @@ tested and reused outside the server.
 """
 from __future__ import annotations
 
+import ast
 from dataclasses import dataclass
 import math
 from typing import Callable, Sequence
 
 import numpy as np
 
-# Scipy is imported lazily — it adds ~700–900 ms to module import on cold-start
-# Cloud Run instances because of its compiled extensions and lazy dependency
-# graph. Type A / Type B / combine_uncertainty / welch_satterthwaite don't need
-# it at all; only expanded_uncertainty uses scipy.stats for t/normal quantiles.
+# Scipy and sympy are imported lazily — they add ~700–900 ms and ~300–500 ms
+# respectively to module import on cold-start Cloud Run instances.
+# Type A / Type B / combine_uncertainty / welch_satterthwaite don't need either.
+# Only expanded_uncertainty uses scipy; only monte_carlo_propagate uses sympy.
 # See issue #4.
 _stats = None  # populated by _get_stats() on first use
+_sympy = None  # populated by _get_sympy() on first use
 
 
 def _get_stats():
@@ -34,6 +36,15 @@ def _get_stats():
         from scipy import stats as _scipy_stats  # noqa: WPS433 — intentional lazy import
         _stats = _scipy_stats
     return _stats
+
+
+def _get_sympy():
+    """Lazy sympy accessor (Monte Carlo formula parser)."""
+    global _sympy
+    if _sympy is None:
+        import sympy as _mod  # noqa: WPS433 — intentional lazy import
+        _sympy = _mod
+    return _sympy
 
 
 # --- Data structures --------------------------------------------------------
@@ -252,4 +263,255 @@ def propagate(
         "combined_standard_uncertainty": combined["combined_standard_uncertainty"],
         "components": combined["components"],
         "effective_dof": dof.get("effective_dof"),
+    }
+
+
+# --- Monte Carlo propagation (JCGM 101:2008) -------------------------------
+
+
+@dataclass
+class InputQuantity:
+    """An input quantity for Monte Carlo propagation.
+
+    `distribution` is the name of a supported sampling distribution:
+      - "normal":      params = {"mean": μ, "std": σ}
+      - "uniform":     params = {"low": a, "high": b}  OR  {"center": c, "half_width": h}
+      - "triangular":  params = {"low": a, "mode": m, "high": b}
+      - "lognormal":   params = {"mu": μ_log, "sigma": σ_log}   (μ, σ of log-variable)
+      - "t":           params = {"mean": μ, "scale": s, "df": ν}
+    """
+    name: str
+    distribution: str
+    params: dict
+    degrees_of_freedom: float = math.inf
+
+
+_SUPPORTED_DISTRIBUTIONS = ("normal", "uniform", "rectangular", "triangular", "lognormal", "t")
+
+
+# --- Formula-parsing security gate ------------------------------------------
+
+
+# sympy.parse_expr internally uses eval() with the full Python builtins, which
+# means naive parsing of an untrusted string like "__import__('os').system(...)"
+# actually executes shell code. We validate the AST *before* letting sympy see
+# it — this is a strict whitelist of operator/call/name nodes only.
+_DANGEROUS_NAMES = frozenset({
+    "__import__", "__builtins__", "__class__", "__subclasses__", "__bases__",
+    "__mro__", "__globals__", "__dict__", "__getattribute__", "__getattr__",
+    "eval", "exec", "compile", "open", "input", "breakpoint",
+    "globals", "locals", "vars", "getattr", "setattr", "delattr",
+    "exit", "quit", "help",
+})
+
+_FORBIDDEN_AST_NODES = (
+    ast.Attribute,         # blocks "os.system", "obj.__class__"
+    ast.Subscript,         # blocks "x[0]", which could index into dunders
+    ast.Lambda,
+    ast.GeneratorExp,
+    ast.ListComp, ast.DictComp, ast.SetComp,
+    ast.Starred,           # blocks "*args" unpacking
+    ast.Yield, ast.YieldFrom,
+    ast.Await,
+    ast.JoinedStr,         # blocks f-strings with expression slots
+    ast.FormattedValue,
+    ast.NamedExpr,         # blocks walrus ":="
+    ast.Dict, ast.DictComp, ast.Set,
+    ast.List, ast.Tuple,   # formulas are scalars; no containers needed
+)
+
+
+def _validate_formula_ast(formula: str) -> None:
+    """Reject anything more powerful than arithmetic-and-function-calls.
+
+    This runs BEFORE sympy.parse_expr so we can block attribute access,
+    subscripting, lambdas, and dunder identifiers — constructs that are
+    not needed to express a measurement model and that could otherwise
+    leak into Python's builtins via sympy's eval-based parser.
+    """
+    try:
+        tree = ast.parse(formula, mode="eval")
+    except SyntaxError as e:
+        raise ValueError(f"Invalid formula syntax: {e}") from e
+
+    for node in ast.walk(tree):
+        if isinstance(node, _FORBIDDEN_AST_NODES):
+            raise ValueError(
+                f"Disallowed formula construct: {type(node).__name__}"
+            )
+        if isinstance(node, ast.Name):
+            ident = node.id
+            if ident in _DANGEROUS_NAMES:
+                raise ValueError(f"Disallowed identifier: {ident!r}")
+            if ident.startswith("__") and ident.endswith("__"):
+                raise ValueError(f"Dunder identifiers are not allowed: {ident!r}")
+
+
+def _sample_input(inp: InputQuantity, n: int, rng) -> np.ndarray:
+    """Draw n samples from the input's distribution."""
+    d = inp.distribution.lower()
+    p = inp.params
+    if d == "normal":
+        return rng.normal(p["mean"], p["std"], n)
+    if d in ("uniform", "rectangular"):
+        if "low" in p and "high" in p:
+            return rng.uniform(p["low"], p["high"], n)
+        if "center" in p and "half_width" in p:
+            c = p["center"]
+            h = p["half_width"]
+            return rng.uniform(c - h, c + h, n)
+        raise ValueError(
+            f"uniform needs (low,high) or (center,half_width); got params={p}"
+        )
+    if d == "triangular":
+        return rng.triangular(p["low"], p["mode"], p["high"], n)
+    if d == "lognormal":
+        return rng.lognormal(p["mu"], p["sigma"], n)
+    if d == "t":
+        return p["mean"] + p["scale"] * rng.standard_t(p["df"], n)
+    raise ValueError(
+        f"Unsupported distribution '{inp.distribution}'. "
+        f"Use one of: {_SUPPORTED_DISTRIBUTIONS}"
+    )
+
+
+def monte_carlo_propagate(
+    formula: str,
+    inputs: Sequence[InputQuantity],
+    n_trials: int = 200_000,
+    coverage: float = 0.95,
+    seed: int | None = None,
+) -> dict:
+    """Monte Carlo uncertainty propagation per JCGM 101:2008 (GUM Supplement 1).
+
+    Use this when any of the following hold:
+      - The measurement model is strongly non-linear.
+      - Input quantities have asymmetric or heavy-tailed distributions.
+      - One dominant component is non-Gaussian.
+      - The Welch-Satterthwaite effective dof is small and the k=2 multiplier
+        is no longer a valid 95 % coverage factor.
+
+    Parameters
+    ----------
+    formula : str
+        Expression in sympy syntax. Variable names must match `inputs[*].name`.
+        Examples: "V / I", "a + b", "exp(x)", "(a * b) / (c - d)".
+    inputs : list of InputQuantity
+        One entry per input quantity. See `InputQuantity` for distribution specs.
+    n_trials : int
+        Number of Monte Carlo trials. JCGM 101 recommends 1e6 for 3-digit
+        coverage-interval accuracy; the default 200_000 is fast (~0.3 s) and
+        typically matches u_c to within 0.3 %.
+    coverage : float
+        Target coverage probability for the reported interval (e.g. 0.95).
+    seed : int or None
+        RNG seed for reproducibility. None uses an OS-seeded RNG.
+
+    Returns
+    -------
+    dict
+        mean, standard_uncertainty, coverage, coverage_interval (shortest),
+        skewness, excess_kurtosis, n_trials, formula.
+
+    Notes
+    -----
+    - The coverage interval is the SHORTEST interval containing `coverage` of
+      the output samples (JCGM 101 §7.7). For symmetric output distributions
+      this matches the probabilistically-symmetric interval; for skewed ones
+      (e.g. ratios, lognormal outputs) it is strictly tighter than y_mean ± U.
+    - Formula parsing uses `sympy.parse_expr` with an empty `global_dict`,
+      which forbids arbitrary Python evaluation — only named inputs and the
+      default sympy math namespace (sin, cos, exp, log, sqrt, …) are allowed.
+    - Correlated inputs are not yet supported in this release; inputs are
+      sampled independently. (A future revision will accept a covariance
+      structure and apply Cholesky factorization.)
+    """
+    if not 0.0 < coverage < 1.0:
+        raise ValueError("coverage must be in (0, 1)")
+    if n_trials < 1000:
+        raise ValueError("n_trials should be >= 1000 for stable statistics")
+
+    # AST-level safety gate — run *before* sympy so malicious strings never
+    # reach sympy.parse_expr's internal eval() call.
+    _validate_formula_ast(formula)
+
+    sympy = _get_sympy()
+    stats = _get_stats()
+
+    input_names = [inp.name for inp in inputs]
+    if len(set(input_names)) != len(input_names):
+        raise ValueError("Input names must be unique")
+
+    symbols = sympy.symbols(input_names)
+    if not isinstance(symbols, (list, tuple)):
+        symbols = (symbols,)
+    local_dict = dict(zip(input_names, symbols))
+
+    # parse_expr uses sympy's default global_dict — sympy math functions
+    # (exp, log, sin, sqrt, …) are available; Python builtins like
+    # __import__, eval, open are NOT in sympy's namespace, so they'd become
+    # unresolved symbols and get caught by the free_symbols check below.
+    try:
+        expr = sympy.parse_expr(formula, local_dict=local_dict)
+        # Coerce Python literals (int, float) into sympy Basic so the rest
+        # of the code can rely on .free_symbols. Also defends against
+        # malformed inputs that cause parse_expr to return non-Basic types.
+        expr = sympy.sympify(expr)
+    except Exception as e:
+        raise ValueError(f"Could not parse formula {formula!r}: {e}") from e
+
+    if not hasattr(expr, "free_symbols"):
+        raise ValueError(
+            f"Formula {formula!r} did not parse as a valid sympy expression"
+        )
+
+    free = {str(s) for s in expr.free_symbols}
+    undefined = free - set(input_names)
+    if undefined:
+        raise ValueError(
+            f"Formula references undefined inputs: {sorted(undefined)}. "
+            f"Known inputs: {input_names}"
+        )
+
+    f = sympy.lambdify(symbols, expr, modules="numpy")
+
+    rng = np.random.default_rng(seed)
+    sample_arrays = [_sample_input(inp, n_trials, rng) for inp in inputs]
+
+    y = np.asarray(f(*sample_arrays), dtype=float)
+    # Scalar expressions (no input dependence) broadcast to a scalar.
+    if y.ndim == 0:
+        y = np.full(n_trials, float(y))
+
+    if not np.all(np.isfinite(y)):
+        n_bad = int((~np.isfinite(y)).sum())
+        raise ValueError(
+            f"{n_bad}/{n_trials} non-finite output samples — "
+            f"check for division by zero, log of non-positive, etc."
+        )
+
+    y_mean = float(np.mean(y))
+    y_std = float(np.std(y, ddof=1))
+    y_skew = float(stats.skew(y))
+    y_kurt = float(stats.kurtosis(y))
+
+    # Shortest coverage interval (JCGM 101 §7.7)
+    y_sorted = np.sort(y)
+    n_cover = int(round(coverage * n_trials))
+    if n_cover >= n_trials:
+        n_cover = n_trials - 1
+    widths = y_sorted[n_cover:] - y_sorted[: n_trials - n_cover]
+    i_min = int(np.argmin(widths))
+    y_low = float(y_sorted[i_min])
+    y_high = float(y_sorted[i_min + n_cover])
+
+    return {
+        "n_trials": n_trials,
+        "formula": formula,
+        "mean": y_mean,
+        "standard_uncertainty": y_std,
+        "coverage": coverage,
+        "coverage_interval": [y_low, y_high],
+        "skewness": y_skew,
+        "excess_kurtosis": y_kurt,
     }

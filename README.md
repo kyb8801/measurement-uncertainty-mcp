@@ -14,7 +14,7 @@ Now live on MCPize: **https://measurement-uncertainty.mcpize.run**
 
 ## What this server does
 
-Exposes 7 MCP tools that implement the **Guide to the Expression of Uncertainty in Measurement (GUM, JCGM 100:2008)**:
+Exposes 8 MCP tools that implement the **Guide to the Expression of Uncertainty in Measurement (GUM, JCGM 100:2008)** and its **Monte Carlo supplement (JCGM 101:2008)**:
 
 | Tool | What it returns |
 |---|---|
@@ -25,6 +25,7 @@ Exposes 7 MCP tools that implement the **Guide to the Expression of Uncertainty 
 | `combine_uncertainty` | Combined standard uncertainty from a list of components and sensitivities |
 | `welch_satterthwaite` | Effective degrees of freedom from components |
 | `expanded_uncertainty` | Expanded uncertainty with coverage factor k for a target confidence level |
+| `monte_carlo_propagate` | **JCGM 101 Monte Carlo propagation** — output mean, standard uncertainty, shortest coverage interval, skewness, excess kurtosis. Use when the model is non-linear, inputs are non-Gaussian, or ν_eff is too small for k=2 to be valid |
 
 The Python library also ships a `propagate(formula, estimates, components)` helper for numerical uncertainty propagation through an arbitrary callable — not exposed as an MCP tool because callables don't serialize over JSON, but directly importable from `measurement_uncertainty_mcp.math_kernel`.
 
@@ -115,10 +116,11 @@ MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
 - [x] Tool definitions (7 tools, JSON Schema)
 - [x] Math kernel (imports from `gumroad_products/python_data_analysis/05_uncertainty_analysis.py`)
 - [x] MCPize deployment (live at `measurement-uncertainty.mcpize.run`, 2026-04-22)
-- [x] Public beta — 7 tools discovered and callable
+- [x] Public beta — 8 tools discovered and callable
+- [x] Cold-start optimization: scipy lazy import, cold p50 ~9× faster (#4)
+- [x] Monte Carlo uncertainty propagation (GUM Supplement 1 / JCGM 101:2008, 2026-04-22) (#2)
 - [ ] First paid subscriber (target: 2026-05-10)
-- [ ] Monte Carlo uncertainty propagation module (GUM Supplement 1, target: 2026-05)
-- [ ] Uncertainty-budget template library (calibration lab standard budgets)
+- [ ] Uncertainty-budget template library (calibration lab standard budgets) (#3)
 
 ## Differentiation
 
@@ -127,7 +129,7 @@ Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrolo
 ## Testing
 
 ```bash
-pytest tests/        # 11/11 kernel tests should pass
+pytest tests/        # kernel + monte carlo tests should all pass
 ```
 
 ## License
