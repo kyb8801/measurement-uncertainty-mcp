@@ -22,6 +22,10 @@ from .math_kernel import (
     expanded_uncertainty,
     monte_carlo_propagate,
 )
+from .templates import (
+    apply_uncertainty_template,
+    list_uncertainty_templates,
+)
 
 log = logging.getLogger("measurement-uncertainty-mcp")
 
@@ -240,6 +244,59 @@ _TOOLS: list[Tool] = [
             "required": ["formula", "inputs"],
         },
     ),
+    Tool(
+        name="list_uncertainty_templates",
+        description=(
+            "Catalog of pre-built GUM uncertainty budgets (CMM length, "
+            "CD-SEM linewidth, DMM voltage, thermocouple, analytical balance, "
+            "OCD thin-film thickness, …). Free on every tier. Optional "
+            "filters by industry (calibration_lab | semiconductor | university) "
+            "or measurand (length | voltage | mass | temperature | thickness)."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "industry": {"type": "string",
+                             "enum": ["calibration_lab", "semiconductor", "university"]},
+                "measurand": {"type": "string"},
+            },
+            "required": [],
+        },
+    ),
+    Tool(
+        name="apply_uncertainty_template",
+        description=(
+            "Run a named uncertainty-budget template end-to-end: combine the "
+            "stored components, compute ν_eff by Welch-Satterthwaite, and "
+            "report the expanded uncertainty U at the target confidence. "
+            "Accepts an optional {component_name: {field: value, ...}} "
+            "override map so users can adapt a template to their setup "
+            "without copying the whole budget. **Team tier only** — set "
+            "the env var MCP_TIER=team on a self-hosted server."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "template_id": {"type": "string",
+                                "description": "Id from list_uncertainty_templates."},
+                "overrides": {
+                    "type": "object",
+                    "description": (
+                        "Optional patch map keyed by component name. "
+                        "Example: {'repeatability': {'u': 0.0003, 'dof': 14}}."
+                    ),
+                    "additionalProperties": {"type": "object"},
+                },
+                "confidence": {
+                    "type": "number",
+                    "minimum": 0.5,
+                    "maximum": 0.999,
+                    "default": 0.95,
+                },
+            },
+            "required": ["template_id"],
+        },
+    ),
 ]
 
 
@@ -310,6 +367,17 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 n_trials=int(arguments.get("n_trials", 200_000)),
                 coverage=float(arguments.get("coverage", 0.95)),
                 seed=int(arguments["seed"]) if arguments.get("seed") is not None else None,
+            ))
+        if name == "list_uncertainty_templates":
+            return _as_text(list_uncertainty_templates(
+                industry=arguments.get("industry"),
+                measurand=arguments.get("measurand"),
+            ))
+        if name == "apply_uncertainty_template":
+            return _as_text(apply_uncertainty_template(
+                template_id=str(arguments["template_id"]),
+                overrides=arguments.get("overrides"),
+                confidence=float(arguments.get("confidence", 0.95)),
             ))
         raise ValueError(f"Unknown tool: {name}")
     except Exception as exc:

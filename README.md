@@ -14,7 +14,7 @@ Now live on MCPize: **https://measurement-uncertainty.mcpize.run**
 
 ## What this server does
 
-Exposes 8 MCP tools that implement the **Guide to the Expression of Uncertainty in Measurement (GUM, JCGM 100:2008)** and its **Monte Carlo supplement (JCGM 101:2008)**:
+Exposes 10 MCP tools that implement the **Guide to the Expression of Uncertainty in Measurement (GUM, JCGM 100:2008)** and its **Monte Carlo supplement (JCGM 101:2008)**:
 
 | Tool | What it returns |
 |---|---|
@@ -26,6 +26,8 @@ Exposes 8 MCP tools that implement the **Guide to the Expression of Uncertainty 
 | `welch_satterthwaite` | Effective degrees of freedom from components |
 | `expanded_uncertainty` | Expanded uncertainty with coverage factor k for a target confidence level |
 | `monte_carlo_propagate` | **JCGM 101 Monte Carlo propagation** — output mean, standard uncertainty, shortest coverage interval, skewness, excess kurtosis. Use when the model is non-linear, inputs are non-Gaussian, or ν_eff is too small for k=2 to be valid |
+| `list_uncertainty_templates` | Catalog of pre-built uncertainty budgets (CMM length, CD-SEM CD, DMM voltage, thermocouple, balance, OCD film thickness). Filters by industry / measurand. Free on every tier |
+| `apply_uncertainty_template` | **Team tier.** Run a named template end-to-end — combine components, compute ν_eff, report U at target confidence. Accepts an `overrides` map so a template adapts to your setup without copy-paste |
 
 The Python library also ships a `propagate(formula, estimates, components)` helper for numerical uncertainty propagation through an arbitrary callable — not exposed as an MCP tool because callables don't serialize over JSON, but directly importable from `measurement_uncertainty_mcp.math_kernel`.
 
@@ -102,6 +104,23 @@ Restart Claude Desktop, then ask:
 
 > "Compute the Type A uncertainty for these 10 CD-SEM measurements: 45.12, 45.08, 45.15, 45.11, 45.09, 45.13, 45.10, 45.14, 45.07, 45.12 nm. Report u, ν, and the expanded uncertainty at k=2."
 
+## Uncertainty-budget templates (Team tier)
+
+Six starter templates ship in v0.2, covering the most commonly recurring budgets in calibration, teaching, and fab metrology:
+
+| Template id | Industry | Measurand | Nominal |
+|---|---|---|---|
+| `cmm_length_10mm` | calibration_lab | length | 10 mm |
+| `dmm_dc_voltage_10v` | calibration_lab | voltage | 10 V |
+| `cdsem_linewidth_45nm` | semiconductor | length | 45 nm |
+| `ocd_film_thickness_50nm` | semiconductor | thickness | 50 nm |
+| `thermocouple_k_100c` | university | temperature | 100 °C |
+| `analytical_balance_500g` | university | mass | 500 g |
+
+`list_uncertainty_templates` is free on every tier (previews component names, descriptions, and references). `apply_uncertainty_template` is **Team tier** — it reads the raw component numbers, combines them via the GUM chain, and returns `U` at the target confidence. Users can pass an `overrides` map keyed by component name to adapt a template to their own measurement setup.
+
+Self-hosting? Set `MCP_TIER=team` in the server environment to unlock `apply_*`.
+
 ## Pricing (planned)
 
 - **Free tier**: 50 calls / month, `type_a_uncertainty` + `type_b_*` only
@@ -113,14 +132,15 @@ MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
 ## Status
 
 - [x] Server skeleton
-- [x] Tool definitions (7 tools, JSON Schema)
+- [x] Tool definitions (10 tools, JSON Schema)
 - [x] Math kernel (imports from `gumroad_products/python_data_analysis/05_uncertainty_analysis.py`)
 - [x] MCPize deployment (live at `measurement-uncertainty.mcpize.run`, 2026-04-22)
-- [x] Public beta — 8 tools discovered and callable
+- [x] Public beta — 10 tools discovered and callable
 - [x] Cold-start optimization: scipy lazy import, cold p50 ~9× faster (#4)
 - [x] Monte Carlo uncertainty propagation (GUM Supplement 1 / JCGM 101:2008, 2026-04-22) (#2)
+- [x] Uncertainty-budget template library v1 — 6 seed templates, Team-tier gated (#3, 2026-04-23)
 - [ ] First paid subscriber (target: 2026-05-10)
-- [ ] Uncertainty-budget template library (calibration lab standard budgets) (#3)
+- [ ] Template library expansion: target 20 templates (pressure, torque, flow, dimensional, electrical)
 
 ## Differentiation
 
@@ -129,7 +149,7 @@ Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrolo
 ## Testing
 
 ```bash
-pytest tests/        # kernel + monte carlo tests should all pass
+pytest tests/        # kernel + monte carlo + templates — all 44 tests should pass
 ```
 
 ## License
