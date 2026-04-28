@@ -6,11 +6,17 @@
 [![MCPize](https://mcpize.com/badge/@kyb8801/measurement-uncertainty)](https://mcpize.com/mcp/measurement-uncertainty)
 [![GitHub stars](https://img.shields.io/github/stars/kyb8801/measurement-uncertainty-mcp?style=social)](https://github.com/kyb8801/measurement-uncertainty-mcp/stargazers)
 
-**The first Model Context Protocol server for GUM-compliant measurement uncertainty analysis.**
+**The first Model Context Protocol server for GUM-compliant measurement uncertainty analysis. Built for ISO/IEC 17025 calibration labs, ISO 10012:2026 measurement management systems, and KOLAS / A2LA / UKAS accredited testing.**
 
-Built for AI engineers, metrologists, and semiconductor equipment teams who need to compute Type A/B uncertainties, combined standard uncertainty, effective degrees of freedom, and expanded uncertainty directly from their LLM assistant — without leaving chat or switching to a spreadsheet.
+Compute Type A/B uncertainties, combined standard uncertainty u_c, effective degrees of freedom ν_eff via Welch-Satterthwaite, expanded uncertainty U with coverage factor k, Monte Carlo propagation per JCGM 101:2008, and apply pre-built KOLAS-ready uncertainty budgets — directly from Claude Desktop, Cursor, Windsurf, or any MCP client. No spreadsheet. No vendor lock-in. Standards-referenceable to JCGM 100:2008.
 
 Now live on MCPize: **https://measurement-uncertainty.mcpize.run**
+
+## Why now — ISO 10012:2026
+
+ISO 10012:2026 was published in February 2026 — the first revision since 2003. The standard introduces a stronger, risk-based approach and adds practical guidance on **measurement uncertainty, Test Uncertainty Ratio (TUR), and decision rules with guard-banding** (aligned with ILAC G8 and ISO 14253-1).
+
+Most calibration labs are currently updating their Excel templates and uncertainty calculation workflows to match. This MCP server is the only Model Context Protocol implementation that ships these primitives end-to-end and is designed to plug directly into the lab's chat-based AI workflow. See [Issue #6](https://github.com/kyb8801/measurement-uncertainty-mcp/issues/6) for the upcoming KOLAS / A2LA / UKAS certificate auto-generation feature (Enterprise tier, Q3 2026 target).
 
 ## What this server does
 
@@ -37,6 +43,25 @@ The Python library also ships a `propagate(formula, estimates, components)` help
 - **Calibration labs** (KOLAS, A2LA, UKAS) that need uncertainty budgets in every certificate and spend hours in Excel on the same formulas.
 - **AI engineers building quality-control agents** that must reason about measurement uncertainty before making a pass/fail call.
 - **Research groups** publishing in journals that require GUM-compliant uncertainty reporting (AIP, IOP, Elsevier metrology titles).
+
+## Five example queries (paste these into Claude Desktop)
+
+After connecting the server, you can ask things like:
+
+1. **CMM length calibration at 10 mm nominal**
+   > "Apply the `cmm_length_10mm` template with my repeatability of 0.0003 mm from 10 readings. Report u_c and U at 95% confidence."
+
+2. **CD-SEM 45 nm linewidth uncertainty budget**
+   > "Type A from these 20 CD-SEM measurements: [45.12, 45.08, 45.15, ... nm]. Combine with magnification calibration ±0.5 nm at k=2 and line-edge roughness ±0.4 nm at k=2. Report ν_eff via Welch-Satterthwaite."
+
+3. **DMM 10 V calibration with TUR check**
+   > "Reference standard ±20 µV at k=2, DMM resolution half-width 1 µV, repeatability 3 µV from n=20. Compute u_c, expanded U at 95%, and the TUR if my tolerance is ±100 µV."
+
+4. **Type-K thermocouple at 100 °C, classroom budget**
+   > "Apply `thermocouple_k_100c` template, override `dmm_voltage` to ±0.05 °C at k=2. What is the dominant uncertainty contributor?"
+
+5. **Non-linear ratio model — Monte Carlo propagation**
+   > "Compute Y = (V × R) / (V + I) where V ~ N(10, 0.05), R ~ N(100, 0.5), I ~ N(0.1, 0.001). Run Monte Carlo with 200k trials and report the shortest 95% coverage interval."
 
 ## Why this is on MCPize, not just GitHub
 
