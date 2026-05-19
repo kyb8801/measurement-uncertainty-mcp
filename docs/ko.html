@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GUM 측정불확도 평가 toolkit — ISO 10012:2026 Excel 템플릿 (한국어)</title>
+
+<meta name="description" content="ISO/IEC 17025 인정 calibration lab의 ISO 10012:2026 대응 Excel 템플릿. Welch-Satterthwaite + Student-t 자동 적용, JCGM 100:2008 준수. KRISS / KOLAS / A2LA / UKAS 적용. ₩30,000 즉시 다운로드.">
+<meta name="keywords" content="ISO 10012:2026, GUM, 측정불확도, 표준불확도, 합성표준불확도, 확장불확도, ISO 17025, Excel 템플릿, Welch-Satterthwaite, KOLAS, KRISS, calibration lab, JCGM 100:2008, MCP server, 한국어">
+<meta name="author" content="kyb8801">
+
+<link rel="canonical" href="https://kyb8801.github.io/measurement-uncertainty-mcp/ko.html">
+<link rel="alternate" hreflang="en" href="https://kyb8801.github.io/measurement-uncertainty-mcp/">
+<link rel="alternate" hreflang="ko" href="https://kyb8801.github.io/measurement-uncertainty-mcp/ko.html">
+
+<meta property="og:type" content="product">
+<meta property="og:title" content="GUM 측정불확도 평가 toolkit — ISO 10012:2026 (한국어판)">
+<meta property="og:description" content="audit-ready 불확도 budget을 5분에. Excel + 11쪽 한국어 reference + KOLAS 24항목 체크리스트. ₩30,000.">
+<meta property="og:url" content="https://kyb8801.github.io/measurement-uncertainty-mcp/ko.html">
+<meta property="og:image" content="https://kyb8801.github.io/measurement-uncertainty-mcp/cover_kr.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "GUM 측정불확도 평가 toolkit (한국어판)",
+  "description": "KOLAS 인정 calibration lab의 ISO 10012:2026 대응 Excel 템플릿 + 한국어 reference PDF + 24항목 KOLAS 감사 체크리스트.",
+  "image": "https://kyb8801.github.io/measurement-uncertainty-mcp/cover_kr.png",
+  "brand": {"@type": "Brand", "name": "kyb8801"},
+  "offers": {
+    "@type": "Offer",
+    "url": "https://kyb8801.gumroad.com",
+    "priceCurrency": "KRW",
+    "price": "30000",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "kyb8801",
+    "jobTitle": "PhD 반도체 계측 (역공학)",
+    "description": "한국·일본·미국 ISO/IEC 17025 calibration lab 감사 3년. KRISS / KTR 직접 네트워크."
+  }
+}
+</script>
+
+<style>
+:root {
+  --navy: #2D5A87; --dark-navy: #1E3C5F; --light-navy: #E8F0F8;
+  --green: #D9EAD3; --yellow: #FFF2CC; --grey: #666;
+  --light-grey: #F5F5F5; --text: #222;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  color: var(--text); line-height: 1.7; font-size: 16px; background: #fff;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+header { background: var(--navy); color: white; padding: 60px 0 50px; }
+header .lang { text-align: right; font-size: 14px; margin-bottom: 20px; }
+header .lang a { color: #b8d4ed; text-decoration: none; }
+header .lang a:hover { color: white; }
+header .tag {
+  font-size: 13px; letter-spacing: 1px; color: #b8d4ed;
+  margin-bottom: 12px;
+}
+header h1 { font-size: 40px; line-height: 1.3; margin: 0 0 16px; font-weight: 700; }
+header .subtitle {
+  font-size: 18px; color: #d6e3f0; max-width: 720px; margin: 0 0 32px;
+}
+header .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+header .cta a {
+  display: inline-block; padding: 14px 26px;
+  background: white; color: var(--navy);
+  font-weight: 600; text-decoration: none; border-radius: 4px;
+}
+header .cta a.secondary {
+  background: transparent; color: white; border: 2px solid white;
+}
+section { padding: 56px 0; }
+section h2 { font-size: 28px; color: var(--navy); margin: 0 0 24px; font-weight: 700; }
+section.alt { background: var(--light-grey); }
+.painlist { list-style: none; padding: 0; }
+.painlist li {
+  padding: 14px 0 14px 32px; border-bottom: 1px solid #ddd;
+  position: relative; font-size: 16px;
+}
+.painlist li::before {
+  content: "✕"; position: absolute; left: 0; top: 14px;
+  color: #cc3344; font-weight: 700;
+}
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; margin-top: 24px;
+}
+.card {
+  background: white; padding: 24px; border-radius: 6px; border: 1px solid #e0e0e0;
+}
+.card h3 { color: var(--navy); margin: 0 0 12px; font-size: 18px; }
+.card .meta { color: var(--grey); font-size: 13px; margin-bottom: 12px; }
+.card ul { padding-left: 18px; margin: 0; }
+.card li { margin-bottom: 6px; font-size: 14px; }
+.mockup {
+  background: var(--light-grey); padding: 24px; border-radius: 6px;
+  font-family: "Courier New", monospace; font-size: 13px;
+  margin: 20px 0; white-space: pre-wrap;
+}
+.steps { counter-reset: step; padding: 0; list-style: none; }
+.steps li {
+  counter-increment: step;
+  padding: 12px 0 12px 50px; position: relative; font-size: 16px;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 8px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--navy); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+.pricecard {
+  background: white; border: 2px solid var(--navy);
+  padding: 40px; border-radius: 8px; text-align: center;
+  max-width: 480px; margin: 0 auto;
+}
+.pricecard .price { font-size: 56px; font-weight: 700; color: var(--navy); margin: 16px 0; }
+.pricecard .price-label { color: var(--grey); margin-bottom: 24px; }
+.pricecard ul { text-align: left; padding-left: 24px; margin: 24px 0; }
+.pricecard li { margin-bottom: 8px; }
+.pricecard a.buy {
+  display: block; padding: 16px 32px; background: var(--navy); color: white;
+  text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 18px;
+}
+.mcp-callout {
+  background: white; padding: 32px; border-radius: 8px;
+  border: 1px solid #ddd; margin-top: 24px;
+}
+.mcp-callout pre {
+  background: var(--dark-navy); color: #b8e6b8;
+  padding: 16px; border-radius: 4px; overflow-x: auto; font-size: 13px;
+}
+.author {
+  display: flex; gap: 24px; align-items: flex-start;
+  background: var(--light-navy); padding: 24px; border-radius: 8px;
+}
+.author .text { flex: 1; }
+.author .text h3 { color: var(--navy); margin: 0 0 8px; }
+.author .text p { margin: 4px 0; font-size: 15px; }
+footer { background: var(--dark-navy); color: #aac4dd; padding: 40px 0; font-size: 14px; }
+footer a { color: #d6e3f0; text-decoration: none; }
+footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
+@media (max-width: 640px) {
+  header h1 { font-size: 28px; }
+  header .subtitle { font-size: 15px; }
+  section h2 { font-size: 22px; }
+  .pricecard .price { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="lang"><a href="index.html">← English</a></div>
+    <div class="tag">ISO/IEC 17025  •  ISO 10012:2026  •  JCGM 100:2008</div>
+    <h1>GUM 측정불확도 평가 toolkit<br>한국어판</h1>
+    <p class="subtitle">
+      KOLAS 인정 calibration lab의 ISO 10012:2026 대응. 측정불확도 budget을
+      20분이 아니라 5분에 audit-ready 상태로 완성. Excel 템플릿 + 11쪽 한국어
+      reference PDF + KOLAS 24항목 감사 체크리스트.
+    </p>
+    <div class="cta">
+      <a href="https://kyb8801.gumroad.com">toolkit 구매 — ₩30,000</a>
+      <a class="secondary" href="https://github.com/kyb8801/measurement-uncertainty-mcp">무료 MCP server →</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>본 toolkit이 차단하는 Excel 실수 6가지</h2>
+    <p>지난 3년간 한국·일본·미국의 40여 개 ISO/IEC 17025 calibration lab을 감사하면서
+       매번 동일한 6가지 실수가 반복되는 것을 확인했습니다. ISO 10012:2026 개정판은
+       2003년 판이 선택적이었던 항목들을 모두 필수로 강화했기 때문에 이 실수들이
+       이제 더 audit-relevant 합니다.</p>
+    <ul class="painlist">
+      <li><strong>Bessel skip</strong> — 표본 std (STDEV, n-1) 대신 모집단 std (STDEVP, n) 사용</li>
+      <li><strong>k-확장 분모 처리 누락</strong> — 인증서 "U = 0.5 nm at k = 2"를 그대로 표준불확도로 입력 (정답: 0.25)</li>
+      <li><strong>default k = 2</strong> — Welch-Satterthwaite + Student-t 적용 생략</li>
+      <li><strong>상관 component를 독립으로 취급</strong> — RSS 공식만 사용</li>
+      <li><strong>비선형 모델에서 감도계수 = 1 default</strong></li>
+      <li><strong>k, ν<sub>eff</sub> 없이 U만 보고</strong> — ISO 10012:2026 6.2가 명시적으로 금지</li>
+    </ul>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>본 toolkit 구성</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Excel 템플릿 (.xlsx)</h3>
+        <div class="meta">6시트, 17 KB</div>
+        <ul>
+          <li>사용법 — 빠른 시작 + 용어 정의</li>
+          <li>빈양식 — 임의 측정 budget</li>
+          <li>CMM_10mm 예제 — 3차원 측정기</li>
+          <li>CDSEM_45nm 예제 — 반도체 임계치수</li>
+          <li>DMM_10V 예제 — DMM + TUR + 판정규칙</li>
+          <li>KOLAS 감사 체크리스트 — 24항목 내장</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>한국어 Reference PDF (11쪽)</h3>
+        <div class="meta">149 KB</div>
+        <ul>
+          <li>JCGM 100:2008 절단위 한국어 해설</li>
+          <li>3가지 worked example 손계산 비교</li>
+          <li>ISO 10012:2026 vs 2003 차이 요약</li>
+          <li>Excel 실수 6가지 차단 패턴</li>
+          <li>KRISS 자료, KOLAS-G-001 참조</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>KOLAS 체크리스트 PDF (4쪽)</h3>
+        <div class="meta">100 KB, 독립 사용</div>
+        <ul>
+          <li>24항목 사전 감사 자체 평가</li>
+          <li>각 항목이 Excel 셀에 매핑됨</li>
+          <li>Pass / Cond / Fail 점수 합산표</li>
+          <li>인쇄 후 감사 walk-through 사용</li>
+          <li>서명란 포함</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>실제 출력 예시 (CD-SEM 45 nm 선폭)</h2>
+    <p>CDSEM_45nm 예제 시트는 반도체 45 nm 임계치수 측정의 완전한 budget을 생성합니다.
+       A형 반복측정성 + 배율 교정 + 선엣지 거칠기를 합성합니다.</p>
+    <div class="mockup">평균 (nm):           45.1125
+표준편차 (Bessel):    0.0245
+n (반복):            20
+u_A (A형):           0.0055 nm   (= s / √n,  ν = 19)
+u_B 배율:            0.2500 nm   (= 0.5 / 2,  ν = 50)
+u_B LER:             0.2000 nm   (= 0.4 / 2,  ν = 50)
+─────────────────────────────────────
+u_c (합성):           0.3202 nm
+ν_eff (Welch-Satterthwaite): 95.5
+k @ 95% (Student-t): 1.985
+U (확장):            0.636 nm
+
+보고 결과 (ISO 10012:2026 6.2 형식):
+  CD = 45.11 ± 0.64 nm @ 95% (k = 1.99, ν_eff = 95)</div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>5분 워크플로우</h2>
+    <ol class="steps">
+      <li><code>GUM_Toolkit_KR_v1.1.xlsx</code> 열기. worked example 시트 또는 빈양식 선택.</li>
+      <li>B3-B5 셀에 측정량 이름, 단위, 신뢰수준 입력.</li>
+      <li>노란색 입력 셀에 각 component 입력 (기호, 값, 분모, 자유도).</li>
+      <li>초록색 셀의 u<sub>c</sub>, ν<sub>eff</sub>, k, U 결과 확인. B17 셀이 ISO 10012:2026 보고 형식 자동 생성.</li>
+      <li>24항목 KOLAS 체크리스트로 자체 검증. 완료.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>무료 companion MCP server</h2>
+    <p>본 toolkit은 Claude Desktop에 추가 가능한 무료 MCP server와 함께 사용 가능합니다:</p>
+    <div class="mcp-callout">
+      <pre>claude mcp add --transport http "Measurement Uncertainty" \
+  https://measurement-uncertainty.mcpize.run</pre>
+      <p style="margin-top: 16px;">
+        Free tier: 월 50 calls, 카드 등록 불필요. 10개 typed tools:
+        <code>type_a_uncertainty</code>, <code>type_b_normal</code>, <code>combine_uncertainty</code>,
+        <code>welch_satterthwaite</code>, <code>expanded_uncertainty</code>,
+        <code>monte_carlo_propagate</code> (JCGM 101:2008), <code>tur_check</code> 등.
+      </p>
+      <p>
+        <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>가격</h2>
+    <div class="pricecard">
+      <div class="price">₩30,000</div>
+      <div class="price-label">단일 사용자 상용 라이센스</div>
+      <ul>
+        <li>Excel 템플릿 (.xlsx) — 6 워크시트</li>
+        <li>한국어 Reference PDF (11쪽)</li>
+        <li>KOLAS 체크리스트 PDF (4쪽)</li>
+        <li>즉시 다운로드 (249 KB zip)</li>
+        <li>본인 lab 내 측정 수 제한 없음</li>
+        <li>첫 budget에서 30분 이상 절약 못하면 14일 환불</li>
+      </ul>
+      <a class="buy" href="https://kyb8801.gumroad.com">Gumroad에서 구매 →</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>저자 소개</h2>
+    <div class="author">
+      <div class="text">
+        <h3>kyb8801 (김용범)</h3>
+        <p><strong>PhD, 반도체 계측 역공학</strong> — CD-SEM, OCD, AFM, TEM 정밀 계측</p>
+        <p><strong>한국·일본·미국 ISO/IEC 17025 calibration lab 감사 3년</strong></p>
+        <p><strong>KRISS</strong> (한국표준과학연구원) <strong>및 KTR</strong> (한국화학융합시험연구원) <strong>직접 네트워크</strong> — KOLAS 인정 lab의 추적성을 공급하는 두 기관</p>
+        <p><strong>ISO 10012:2026 적용 working group 참여</strong></p>
+        <p style="margin-top: 16px;">
+          본 toolkit이 차단하는 6가지 실수는 이론이 아닌, 제가 실제 audit 보고서에
+          수십 차례 작성한 지적사항입니다.
+          <a href="https://github.com/kyb8801">GitHub: kyb8801</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>본 toolkit이 다루지 않는 것</h2>
+    <ul>
+      <li>JCGM 101:2008 Monte Carlo 전파 (companion MCP 사용)</li>
+      <li>Bayesian 불확도 분석 (frequentist GUM만 따름)</li>
+      <li>자동 상관 component 공분산 처리 (v2.0 예정)</li>
+      <li>영문판 (별도 v1.0 판매)</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="links">
+      <a href="https://kyb8801.gumroad.com">Gumroad 스토어</a>
+      <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo</a>
+      <a href="https://yb-ai-hustle.beehiiv.com">Weekly 빌드 로그</a>
+      <a href="index.html">English</a>
+    </div>
+    <p style="margin-top: 20px; font-size: 12px;">
+      © 2026 kyb8801. 단일 사용자 상용 라이센스. JCGM 100:2008, JCGM 101:2008,
+      ISO/IEC 17025:2017, ISO 10012:2026, ISO 14253-1:2017, ILAC G8:09/2019,
+      KOLAS-G-001 준수.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026 Excel Template</title>
+
+<meta name="description" content="Excel template for ISO/IEC 17025 calibration labs updating to ISO 10012:2026. Welch-Satterthwaite, Student-t, JCGM 100:2008 compliant. Free MCP server companion. $19 single-user, instant download.">
+<meta name="keywords" content="ISO 10012:2026, GUM, measurement uncertainty, ISO 17025, Excel template, Welch-Satterthwaite, KOLAS, A2LA, UKAS, calibration laboratory, JCGM 100:2008, expanded uncertainty, type A type B, MCP server">
+<meta name="author" content="kyb8801">
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://kyb8801.github.io/measurement-uncertainty-mcp/">
+<link rel="alternate" hreflang="en" href="https://kyb8801.github.io/measurement-uncertainty-mcp/">
+<link rel="alternate" hreflang="ko" href="https://kyb8801.github.io/measurement-uncertainty-mcp/ko.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="product">
+<meta property="og:title" content="GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026">
+<meta property="og:description" content="Audit-ready uncertainty budget in 5 minutes. JCGM 100:2008 compliant Excel + reference PDF + KOLAS 24-point audit checklist. $19.">
+<meta property="og:url" content="https://kyb8801.github.io/measurement-uncertainty-mcp/">
+<meta property="og:image" content="https://kyb8801.github.io/measurement-uncertainty-mcp/cover.png">
+
+<!-- Schema.org Product + Author -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "GUM Measurement Uncertainty Budget Toolkit",
+  "description": "Excel template, reference PDF, and 24-point audit checklist for ISO/IEC 17025 calibration laboratories updating to ISO 10012:2026.",
+  "image": "https://kyb8801.github.io/measurement-uncertainty-mcp/cover.png",
+  "brand": {"@type": "Brand", "name": "kyb8801"},
+  "offers": {
+    "@type": "Offer",
+    "url": "https://kyb8801.gumroad.com",
+    "priceCurrency": "USD",
+    "price": "19.00",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "kyb8801",
+    "jobTitle": "PhD, Semiconductor Reverse-Engineering Metrology",
+    "description": "3 years auditing ISO/IEC 17025 calibration laboratories in Korea, Japan, and the United States. Direct network with KRISS and KTR."
+  }
+}
+</script>
+
+<style>
+:root {
+  --navy: #2D5A87;
+  --dark-navy: #1E3C5F;
+  --light-navy: #E8F0F8;
+  --green: #D9EAD3;
+  --yellow: #FFF2CC;
+  --grey: #666;
+  --light-grey: #F5F5F5;
+  --text: #222;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--text); line-height: 1.6; font-size: 16px;
+  background: #fff;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header {
+  background: var(--navy); color: white;
+  padding: 60px 0 50px;
+}
+header .lang { text-align: right; font-size: 14px; margin-bottom: 20px; }
+header .lang a { color: #b8d4ed; text-decoration: none; }
+header .lang a:hover { color: white; }
+header .tag {
+  font-size: 13px; letter-spacing: 1px;
+  color: #b8d4ed; margin-bottom: 12px; text-transform: uppercase;
+}
+header h1 {
+  font-size: 44px; line-height: 1.2; margin: 0 0 16px;
+  font-weight: 700;
+}
+header .subtitle {
+  font-size: 19px; color: #d6e3f0;
+  max-width: 720px; margin: 0 0 32px;
+}
+header .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+header .cta a {
+  display: inline-block; padding: 14px 26px;
+  background: white; color: var(--navy);
+  font-weight: 600; text-decoration: none; border-radius: 4px;
+  transition: transform 0.1s;
+}
+header .cta a:hover { transform: translateY(-1px); }
+header .cta a.secondary {
+  background: transparent; color: white; border: 2px solid white;
+}
+
+/* Sections */
+section { padding: 56px 0; }
+section h2 {
+  font-size: 30px; color: var(--navy);
+  margin: 0 0 24px; font-weight: 700;
+}
+section.alt { background: var(--light-grey); }
+
+/* Pain points */
+.painlist { list-style: none; padding: 0; }
+.painlist li {
+  padding: 14px 0 14px 32px; border-bottom: 1px solid #ddd;
+  position: relative; font-size: 17px;
+}
+.painlist li::before {
+  content: "✕"; position: absolute; left: 0; top: 14px;
+  color: #cc3344; font-weight: 700;
+}
+
+/* What you get grid */
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; margin-top: 24px;
+}
+.card {
+  background: white; padding: 24px; border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+.card h3 {
+  color: var(--navy); margin: 0 0 12px; font-size: 18px;
+}
+.card .meta { color: var(--grey); font-size: 13px; margin-bottom: 12px; }
+.card ul { padding-left: 18px; margin: 0; }
+.card li { margin-bottom: 6px; font-size: 14px; }
+
+/* Mockup */
+.mockup {
+  background: var(--light-grey); padding: 24px; border-radius: 6px;
+  font-family: "Courier New", monospace; font-size: 13px;
+  margin: 20px 0; white-space: pre-wrap;
+}
+
+/* Five-minute steps */
+.steps { counter-reset: step; padding: 0; list-style: none; }
+.steps li {
+  counter-increment: step;
+  padding: 12px 0 12px 50px; position: relative;
+  font-size: 16px;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 8px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--navy); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+
+/* Pricing card */
+.pricecard {
+  background: white; border: 2px solid var(--navy);
+  padding: 40px; border-radius: 8px; text-align: center;
+  max-width: 480px; margin: 0 auto;
+}
+.pricecard .price {
+  font-size: 64px; font-weight: 700; color: var(--navy);
+  margin: 16px 0;
+}
+.pricecard .price-label { color: var(--grey); margin-bottom: 24px; }
+.pricecard ul {
+  text-align: left; padding-left: 24px; margin: 24px 0;
+}
+.pricecard li { margin-bottom: 8px; }
+.pricecard a.buy {
+  display: block; padding: 16px 32px;
+  background: var(--navy); color: white;
+  text-decoration: none; border-radius: 4px;
+  font-weight: 600; font-size: 18px;
+}
+.pricecard a.buy:hover { background: var(--dark-navy); }
+
+/* MCP free section */
+.mcp-callout {
+  background: white; padding: 32px; border-radius: 8px;
+  border: 1px solid #ddd; margin-top: 24px;
+}
+.mcp-callout pre {
+  background: var(--dark-navy); color: #b8e6b8;
+  padding: 16px; border-radius: 4px; overflow-x: auto;
+  font-size: 13px;
+}
+
+/* Author credibility */
+.author {
+  display: flex; gap: 24px; align-items: flex-start;
+  background: var(--light-navy); padding: 24px; border-radius: 8px;
+}
+.author .text { flex: 1; }
+.author .text h3 { color: var(--navy); margin: 0 0 8px; }
+.author .text p { margin: 4px 0; font-size: 15px; }
+
+/* Footer */
+footer {
+  background: var(--dark-navy); color: #aac4dd;
+  padding: 40px 0; font-size: 14px;
+}
+footer a { color: #d6e3f0; text-decoration: none; }
+footer a:hover { color: white; text-decoration: underline; }
+footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 32px; }
+  header .subtitle { font-size: 16px; }
+  section h2 { font-size: 24px; }
+  .pricecard .price { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="lang"><a href="ko.html">한국어 →</a></div>
+    <div class="tag">ISO/IEC 17025  •  ISO 10012:2026  •  JCGM 100:2008</div>
+    <h1>GUM Measurement Uncertainty<br>Budget Toolkit</h1>
+    <p class="subtitle">
+      Audit-ready measurement uncertainty budget in 5 minutes instead of 20.
+      Excel template + reference PDF + 24-point KOLAS/A2LA/UKAS audit checklist.
+      Engineered for the new ISO 10012:2026 published in February 2026.
+    </p>
+    <div class="cta">
+      <a href="https://kyb8801.gumroad.com">Get the toolkit — $19</a>
+      <a class="secondary" href="https://github.com/kyb8801/measurement-uncertainty-mcp">Free MCP server →</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>The six Excel mistakes this toolkit prevents</h2>
+    <p>Over 3 years auditing 40+ ISO/IEC 17025 calibration laboratories,
+       I keep finding the same six mistakes in measurement uncertainty budgets.
+       ISO 10012:2026 makes each one more audit-relevant than the 2003 edition did.</p>
+    <ul class="painlist">
+      <li><strong>Bessel skip</strong> — STDEVP (n) used instead of STDEV (n-1) for sample standard deviation</li>
+      <li><strong>k-divide skip</strong> — Certificate value "U = 0.5 nm at k = 2" entered as standard uncertainty instead of being divided by k</li>
+      <li><strong>Default k = 2</strong> instead of Welch-Satterthwaite + Student-t coverage factor</li>
+      <li><strong>Correlated components treated as independent</strong> in root-sum-of-squares</li>
+      <li><strong>Sensitivity coefficients defaulted to 1</strong> for non-linear measurement models</li>
+      <li><strong>Expanded U reported without k and ν<sub>eff</sub></strong> — forbidden by ISO 10012:2026 clause 6.2</li>
+    </ul>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>What's in the toolkit</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Excel template (.xlsx)</h3>
+        <div class="meta">6 worksheets, 13 KB</div>
+        <ul>
+          <li>BLANK_TEMPLATE — your own measurement</li>
+          <li>CMM_10mm — coordinate measuring machine</li>
+          <li>CDSEM_45nm — semiconductor critical dimension</li>
+          <li>DMM_10V — digital multimeter with TUR check</li>
+          <li>KOLAS_Audit_Checklist — 24-point self-assessment</li>
+          <li>README — formula glossary</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Reference PDF (12 pages)</h3>
+        <div class="meta">29 KB, English</div>
+        <ul>
+          <li>JCGM 100:2008 walk-through, section by section</li>
+          <li>3 worked examples calculated by hand alongside Excel</li>
+          <li>ISO 10012:2026 vs 2003 difference summary</li>
+          <li>Six common Excel mistakes with prevention path</li>
+          <li>References to all related standards</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>KOLAS audit checklist PDF (4 pages)</h3>
+        <div class="meta">14 KB, standalone</div>
+        <ul>
+          <li>24-point pre-audit self-assessment</li>
+          <li>Each item mapped to an Excel cell</li>
+          <li>Pass / Conditional / Fail scorecard</li>
+          <li>Print and use during walk-through</li>
+          <li>Signature block</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>What an output looks like (CD-SEM 45 nm)</h2>
+    <p>The Excel template's CDSEM_45nm worked example produces a complete budget
+       for a 45 nm critical-dimension measurement combining Type A repeatability,
+       magnification calibration, and line-edge roughness.</p>
+    <div class="mockup">Mean (nm):           45.1125
+Std (Bessel):        0.0245
+n (repeats):         20
+u_A (Type A):        0.0055 nm   (= s / √n,  ν = 19)
+u_B magnification:   0.2500 nm   (= 0.5 / 2,  ν = 50)
+u_B line-edge LER:   0.2000 nm   (= 0.4 / 2,  ν = 50)
+─────────────────────────────────────
+u_c (combined):      0.3202 nm
+ν_eff (Welch-Satterthwaite): 95.5
+k @ 95% (Student-t): 1.985
+U (expanded):        0.636 nm
+
+Reported result (ISO 10012:2026 §6.2 format):
+  CD = 45.11 ± 0.64 nm @ 95% (k = 1.99, ν_eff = 95)</div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>5-minute workflow</h2>
+    <ol class="steps">
+      <li>Open <code>GUM_Toolkit_v1.xlsx</code>. Pick a worked-example sheet or start from BLANK_TEMPLATE.</li>
+      <li>Enter measurand name, units, and confidence level in cells B2–B4.</li>
+      <li>Fill the yellow input cells: symbol, value, divisor (k or √3), degrees of freedom.</li>
+      <li>Read u<sub>c</sub>, ν<sub>eff</sub>, k, U from the green cells. Cell B17 generates the canonical "y ± U at L% confidence (k = …, ν<sub>eff</sub> = …)" string.</li>
+      <li>Cross-check the 24-point KOLAS audit checklist. Done.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Free companion MCP server</h2>
+    <p>The toolkit ships with a free Model Context Protocol server hosted on Google Cloud Run.
+       Add it to Claude Desktop with one CLI command:</p>
+    <div class="mcp-callout">
+      <pre>claude mcp add --transport http "Measurement Uncertainty" \
+  https://measurement-uncertainty.mcpize.run</pre>
+      <p style="margin-top: 16px;">
+        Free tier: 50 calls per month, no credit card. Ten typed tools including
+        <code>type_a_uncertainty</code>, <code>type_b_normal</code>, <code>combine_uncertainty</code>,
+        <code>welch_satterthwaite</code>, <code>expanded_uncertainty</code>,
+        <code>monte_carlo_propagate</code> (per JCGM 101:2008), and <code>tur_check</code>.
+      </p>
+      <p>
+        <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">Repo on GitHub →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>Pricing</h2>
+    <div class="pricecard">
+      <div class="price">$19</div>
+      <div class="price-label">Single-user commercial license</div>
+      <ul>
+        <li>Excel template (.xlsx) — 6 worksheets</li>
+        <li>Reference PDF (12 pages)</li>
+        <li>KOLAS audit checklist PDF (4 pages)</li>
+        <li>Instant download (45 KB zip)</li>
+        <li>Use within your own lab, no measurement count limit</li>
+        <li>14-day refund if you don't save 30+ minutes on first budget</li>
+      </ul>
+      <a class="buy" href="https://kyb8801.gumroad.com">Get the toolkit on Gumroad →</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>About the author</h2>
+    <div class="author">
+      <div class="text">
+        <h3>kyb8801</h3>
+        <p><strong>PhD, semiconductor reverse-engineering metrology</strong> — CD-SEM, OCD, AFM, TEM</p>
+        <p><strong>3 years auditing ISO/IEC 17025 calibration laboratories</strong> in Korea, Japan, and the United States</p>
+        <p><strong>Direct network with KRISS</strong> (Korea Research Institute of Standards and Science) <strong>and KTR</strong> (Korea Testing & Research Institute) — the two national bodies supplying traceability for every KOLAS-accredited lab</p>
+        <p><strong>Active contributor to the ISO 10012:2026 implementation discussion</strong> in industry working groups</p>
+        <p style="margin-top: 16px;">
+          The six mistakes in the prevention list are not theoretical. They are findings
+          I have personally written into audit reports dozens of times.
+          <a href="https://github.com/kyb8801">GitHub: kyb8801</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>What's NOT in this toolkit</h2>
+    <ul>
+      <li>Monte Carlo propagation per JCGM 101:2008 — use the companion MCP server above</li>
+      <li>Bayesian uncertainty analysis — toolkit follows the frequentist GUM only</li>
+      <li>Automatic covariance handling for correlated components (planned v2.0)</li>
+      <li>Korean-language edition — available separately as v1.1</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="links">
+      <a href="https://kyb8801.gumroad.com">Gumroad store</a>
+      <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo</a>
+      <a href="https://yb-ai-hustle.beehiiv.com">Weekly build log</a>
+      <a href="ko.html">한국어판</a>
+    </div>
+    <p style="margin-top: 20px; font-size: 12px;">
+      © 2026 kyb8801. Single-user commercial license. Standards-compliant with JCGM 100:2008,
+      JCGM 101:2008, ISO/IEC 17025:2017, ISO 10012:2026, ISO 14253-1:2017, ILAC G8:09/2019,
+      ANSI/NCSL Z540.3-2006, KOLAS-G-001.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
