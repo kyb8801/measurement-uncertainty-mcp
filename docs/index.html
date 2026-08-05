@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026 Excel Template</title>
 
-<meta name="description" content="Excel template for ISO/IEC 17025 calibration labs updating to ISO 10012:2026. Welch-Satterthwaite, Student-t, JCGM 100:2008 compliant. Free MCP server companion. $19 single-user, instant download.">
+<meta name="description" content="Excel template for ISO/IEC 17025 calibration labs updating to ISO 10012:2026. Welch-Satterthwaite, Student-t, built to JCGM 100:2008. Free MCP server companion. $19 single-user, instant download.">
 <meta name="keywords" content="ISO 10012:2026, GUM, measurement uncertainty, ISO 17025, Excel template, Welch-Satterthwaite, KOLAS, A2LA, UKAS, calibration laboratory, JCGM 100:2008, expanded uncertainty, type A type B, MCP server">
-<meta name="author" content="kyb8801">
+<meta name="author" content="Youngbum Kim">
 <meta name="robots" content="index, follow">
 
 <link rel="canonical" href="https://kyb8801.github.io/measurement-uncertainty-mcp/">
@@ -17,7 +17,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="product">
 <meta property="og:title" content="GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026">
-<meta property="og:description" content="Audit-ready uncertainty budget in 5 minutes. JCGM 100:2008 compliant Excel + reference PDF + KOLAS 24-point audit checklist. $19.">
+<meta property="og:description" content="Uncertainty budget in 5 minutes. Excel built to JCGM 100:2008 + reference PDF + 24-point self-assessment checklist. $19.">
 <meta property="og:url" content="https://kyb8801.github.io/measurement-uncertainty-mcp/">
 <meta property="og:image" content="https://kyb8801.github.io/measurement-uncertainty-mcp/cover.png">
 
@@ -39,9 +39,9 @@
   },
   "author": {
     "@type": "Person",
-    "name": "kyb8801",
-    "jobTitle": "PhD, Semiconductor Reverse-Engineering Metrology",
-    "description": "3 years auditing ISO/IEC 17025 calibration laboratories in Korea, Japan, and the United States. Direct network with KRISS and KTR."
+    "name": "Youngbum Kim",
+    "jobTitle": "PhD, Optics and Nanoscience — nanoscale optical metrology",
+    "description": "Practitioner at a KOLAS-accredited ISO 17034 reference-material producer, on the auditee side of accreditation assessments. Builds GUM / JCGM 100:2008 uncertainty tooling."
   }
 }
 </script>
@@ -239,9 +239,9 @@ footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
 <section>
   <div class="container">
     <h2>The six Excel mistakes this toolkit prevents</h2>
-    <p>Over 3 years auditing 40+ ISO/IEC 17025 calibration laboratories,
-       I keep finding the same six mistakes in measurement uncertainty budgets.
-       ISO 10012:2026 makes each one more audit-relevant than the 2003 edition did.</p>
+    <p>These six are the mistakes JCGM 100:2008 (GUM) makes explicit and a spreadsheet
+       makes easy to get wrong. ISO 10012:2026 makes each one more audit-relevant
+       than the 2003 edition did.</p>
     <ul class="painlist">
       <li><strong>Bessel skip</strong> — STDEVP (n) used instead of STDEV (n-1) for sample standard deviation</li>
       <li><strong>k-divide skip</strong> — Certificate value "U = 0.5 nm at k = 2" entered as standard uncertainty instead of being divided by k</li>
@@ -376,14 +376,14 @@ Reported result (ISO 10012:2026 §6.2 format):
     <h2>About the author</h2>
     <div class="author">
       <div class="text">
-        <h3>kyb8801</h3>
-        <p><strong>PhD, semiconductor reverse-engineering metrology</strong> — CD-SEM, OCD, AFM, TEM</p>
-        <p><strong>3 years auditing ISO/IEC 17025 calibration laboratories</strong> in Korea, Japan, and the United States</p>
-        <p><strong>Direct network with KRISS</strong> (Korea Research Institute of Standards and Science) <strong>and KTR</strong> (Korea Testing & Research Institute) — the two national bodies supplying traceability for every KOLAS-accredited lab</p>
-        <p><strong>Active contributor to the ISO 10012:2026 implementation discussion</strong> in industry working groups</p>
+        <h3>Youngbum Kim (kyb8801)</h3>
+        <p><strong>PhD, optics and nanoscience</strong> — nanoscale optical metrology: NSOM, AFM, Raman, SEM</p>
+        <p><strong>Practitioner at a KOLAS-accredited ISO 17034 reference-material producer</strong> — on the <em>auditee</em> side of accreditation assessments: preparing the uncertainty budgets that get assessed, not writing the findings</p>
+        <p><strong>Reading ISO 10012:2026 as an implementer</strong> — this toolkit is what I wanted to exist while updating our own templates</p>
         <p style="margin-top: 16px;">
-          The six mistakes in the prevention list are not theoretical. They are findings
-          I have personally written into audit reports dozens of times.
+          I am not an assessor and this is not an official KOLAS, A2LA or UKAS product.
+          It is one practitioner's spreadsheet, cleaned up, with the GUM clause behind
+          every cell written next to it.
           <a href="https://github.com/kyb8801">GitHub: kyb8801</a>
         </p>
       </div>
@@ -412,9 +412,9 @@ Reported result (ISO 10012:2026 §6.2 format):
       <a href="ko.html">한국어판</a>
     </div>
     <p style="margin-top: 20px; font-size: 12px;">
-      © 2026 kyb8801. Single-user commercial license. Standards-compliant with JCGM 100:2008,
+      © 2026 Youngbum Kim. Single-user commercial license. Computations follow JCGM 100:2008,
       JCGM 101:2008, ISO/IEC 17025:2017, ISO 10012:2026, ISO 14253-1:2017, ILAC G8:09/2019,
-      ANSI/NCSL Z540.3-2006, KOLAS-G-001.
+      ANSI/NCSL Z540.3-2006, KOLAS-G-001. Not certified or endorsed by any accreditation body.
     </p>
   </div>
 </footer>
