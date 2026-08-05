@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026 Excel Template</title>
 
-<meta name="description" content="Excel template for ISO/IEC 17025 calibration labs updating to ISO 10012:2026. Welch-Satterthwaite, Student-t, built to JCGM 100:2008. Free MCP server companion. $19 single-user, instant download.">
+<meta name="description" content="Excel template for ISO/IEC 17025 calibration labs updating to ISO 10012:2026. Welch-Satterthwaite, Student-t, built to JCGM 100:2008. The free MCP server is available now; the Excel toolkit is in preparation and not yet on sale.">
 <meta name="keywords" content="ISO 10012:2026, GUM, measurement uncertainty, ISO 17025, Excel template, Welch-Satterthwaite, KOLAS, A2LA, UKAS, calibration laboratory, JCGM 100:2008, expanded uncertainty, type A type B, MCP server">
 <meta name="author" content="Youngbum Kim">
 <meta name="robots" content="index, follow">
@@ -17,7 +17,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="product">
 <meta property="og:title" content="GUM Measurement Uncertainty Budget Toolkit — ISO 10012:2026">
-<meta property="og:description" content="Uncertainty budget in 5 minutes. Excel built to JCGM 100:2008 + reference PDF + 24-point self-assessment checklist. $19.">
+<meta property="og:description" content="Free GUM uncertainty MCP server, available now. Companion Excel toolkit in preparation — not yet on sale.">
 <meta property="og:url" content="https://kyb8801.github.io/measurement-uncertainty-mcp/">
 <meta property="og:image" content="https://kyb8801.github.io/measurement-uncertainty-mcp/cover.png">
 
@@ -30,13 +30,6 @@
   "description": "Excel template, reference PDF, and 24-point audit checklist for ISO/IEC 17025 calibration laboratories updating to ISO 10012:2026.",
   "image": "https://kyb8801.github.io/measurement-uncertainty-mcp/cover.png",
   "brand": {"@type": "Brand", "name": "kyb8801"},
-  "offers": {
-    "@type": "Offer",
-    "url": "https://kyb8801.gumroad.com",
-    "priceCurrency": "USD",
-    "price": "19.00",
-    "availability": "https://schema.org/InStock"
-  },
   "author": {
     "@type": "Person",
     "name": "Youngbum Kim",
@@ -230,8 +223,8 @@ footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
       Engineered for the new ISO 10012:2026 published in February 2026.
     </p>
     <div class="cta">
-      <a href="https://kyb8801.gumroad.com">Get the toolkit — $19</a>
-      <a class="secondary" href="https://github.com/kyb8801/measurement-uncertainty-mcp">Free MCP server →</a>
+      <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">Get the free MCP server</a>
+      <a class="secondary" href="#mcp">How it works →</a>
     </div>
   </div>
 </header>
@@ -255,7 +248,9 @@ footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
 
 <section class="alt">
   <div class="container">
-    <h2>What's in the toolkit</h2>
+    <h2>What's planned for the toolkit</h2>
+    <p><strong>Not available yet.</strong> The Excel toolkit below is in preparation and is not for sale
+       anywhere. Only the free MCP server on GitHub exists today.</p>
     <div class="grid">
       <div class="card">
         <h3>Excel template (.xlsx)</h3>
@@ -333,7 +328,7 @@ Reported result (ISO 10012:2026 §6.2 format):
 
 <section>
   <div class="container">
-    <h2>Free companion MCP server</h2>
+    <h2 id="mcp">Free companion MCP server</h2>
     <p>The toolkit ships with a free Model Context Protocol server hosted on Google Cloud Run.
        Add it to Claude Desktop with one CLI command:</p>
     <div class="mcp-callout">
@@ -348,25 +343,6 @@ Reported result (ISO 10012:2026 §6.2 format):
       <p>
         <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">Repo on GitHub →</a>
       </p>
-    </div>
-  </div>
-</section>
-
-<section class="alt">
-  <div class="container">
-    <h2>Pricing</h2>
-    <div class="pricecard">
-      <div class="price">$19</div>
-      <div class="price-label">Single-user commercial license</div>
-      <ul>
-        <li>Excel template (.xlsx) — 6 worksheets</li>
-        <li>Reference PDF (12 pages)</li>
-        <li>KOLAS audit checklist PDF (4 pages)</li>
-        <li>Instant download (45 KB zip)</li>
-        <li>Use within your own lab, no measurement count limit</li>
-        <li>14-day refund if you don't save 30+ minutes on first budget</li>
-      </ul>
-      <a class="buy" href="https://kyb8801.gumroad.com">Get the toolkit on Gumroad →</a>
     </div>
   </div>
 </section>
@@ -406,13 +382,12 @@ Reported result (ISO 10012:2026 §6.2 format):
 <footer>
   <div class="container">
     <div class="links">
-      <a href="https://kyb8801.gumroad.com">Gumroad store</a>
       <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo</a>
       <a href="https://yb-ai-hustle.beehiiv.com">Weekly build log</a>
       <a href="ko.html">한국어판</a>
     </div>
     <p style="margin-top: 20px; font-size: 12px;">
-      © 2026 Youngbum Kim. Single-user commercial license. Computations follow JCGM 100:2008,
+      © 2026 Youngbum Kim. MCP server released under the repository license. Computations follow JCGM 100:2008,
       JCGM 101:2008, ISO/IEC 17025:2017, ISO 10012:2026, ISO 14253-1:2017, ILAC G8:09/2019,
       ANSI/NCSL Z540.3-2006, KOLAS-G-001. Not certified or endorsed by any accreditation body.
     </p>

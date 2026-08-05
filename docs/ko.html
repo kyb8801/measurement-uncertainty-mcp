@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GUM 측정불확도 평가 toolkit — ISO 10012:2026 Excel 템플릿 (한국어)</title>
 
-<meta name="description" content="ISO/IEC 17025 인정 calibration lab의 ISO 10012:2026 대응 Excel 템플릿. Welch-Satterthwaite + Student-t 자동 적용, JCGM 100:2008 기반. KOLAS / A2LA / UKAS 인정 lab 대상. ₩30,000 즉시 다운로드.">
+<meta name="description" content="ISO/IEC 17025 인정 calibration lab의 ISO 10012:2026 대응 Excel 템플릿. Welch-Satterthwaite + Student-t 자동 적용, JCGM 100:2008 기반. KOLAS / A2LA / UKAS 인정 lab 대상. 무료 MCP server 는 지금 사용 가능, Excel toolkit 은 준비 중이며 아직 판매하지 않습니다.">
 <meta name="keywords" content="ISO 10012:2026, GUM, 측정불확도, 표준불확도, 합성표준불확도, 확장불확도, ISO 17025, Excel 템플릿, Welch-Satterthwaite, KOLAS, calibration lab, JCGM 100:2008, MCP server, 한국어">
 <meta name="author" content="김용범 (Youngbum Kim)">
 
@@ -15,7 +15,7 @@
 
 <meta property="og:type" content="product">
 <meta property="og:title" content="GUM 측정불확도 평가 toolkit — ISO 10012:2026 (한국어판)">
-<meta property="og:description" content="불확도 budget을 5분에. Excel + 11쪽 한국어 reference + 24항목 자체점검 체크리스트. ₩30,000.">
+<meta property="og:description" content="무료 GUM 불확도 MCP server 지금 사용 가능. 함께 쓸 Excel toolkit 은 준비 중 — 아직 판매하지 않습니다.">
 <meta property="og:url" content="https://kyb8801.github.io/measurement-uncertainty-mcp/ko.html">
 <meta property="og:image" content="https://kyb8801.github.io/measurement-uncertainty-mcp/cover_kr.png">
 
@@ -27,13 +27,6 @@
   "description": "KOLAS 인정 calibration lab의 ISO 10012:2026 대응 Excel 템플릿 + 한국어 reference PDF + 24항목 KOLAS 감사 체크리스트.",
   "image": "https://kyb8801.github.io/measurement-uncertainty-mcp/cover_kr.png",
   "brand": {"@type": "Brand", "name": "kyb8801"},
-  "offers": {
-    "@type": "Offer",
-    "url": "https://kyb8801.gumroad.com",
-    "priceCurrency": "KRW",
-    "price": "30000",
-    "availability": "https://schema.org/InStock"
-  },
   "author": {
     "@type": "Person",
     "name": "김용범 (Youngbum Kim)",
@@ -170,8 +163,8 @@ footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
       reference PDF + KOLAS 24항목 감사 체크리스트.
     </p>
     <div class="cta">
-      <a href="https://kyb8801.gumroad.com">toolkit 구매 — ₩30,000</a>
-      <a class="secondary" href="https://github.com/kyb8801/measurement-uncertainty-mcp">무료 MCP server →</a>
+      <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">무료 MCP server 받기</a>
+      <a class="secondary" href="#mcp">동작 방식 보기 →</a>
     </div>
   </div>
 </header>
@@ -195,7 +188,9 @@ footer .links { display: flex; gap: 28px; flex-wrap: wrap; }
 
 <section class="alt">
   <div class="container">
-    <h2>본 toolkit 구성</h2>
+    <h2>toolkit 구성 (준비 중)</h2>
+    <p><strong>아직 판매하지 않습니다.</strong> 아래 Excel toolkit 은 준비 중이며 어디에서도 판매하고 있지 않습니다.
+       현재 실제로 존재하는 것은 GitHub 의 무료 MCP server 뿐입니다.</p>
     <div class="grid">
       <div class="card">
         <h3>Excel 템플릿 (.xlsx)</h3>
@@ -272,7 +267,7 @@ U (확장):            0.636 nm
 
 <section>
   <div class="container">
-    <h2>무료 companion MCP server</h2>
+    <h2 id="mcp">무료 companion MCP server</h2>
     <p>본 toolkit은 Claude Desktop에 추가 가능한 무료 MCP server와 함께 사용 가능합니다:</p>
     <div class="mcp-callout">
       <pre>claude mcp add --transport http "Measurement Uncertainty" \
@@ -286,25 +281,6 @@ U (확장):            0.636 nm
       <p>
         <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo →</a>
       </p>
-    </div>
-  </div>
-</section>
-
-<section class="alt">
-  <div class="container">
-    <h2>가격</h2>
-    <div class="pricecard">
-      <div class="price">₩30,000</div>
-      <div class="price-label">단일 사용자 상용 라이센스</div>
-      <ul>
-        <li>Excel 템플릿 (.xlsx) — 6 워크시트</li>
-        <li>한국어 Reference PDF (11쪽)</li>
-        <li>KOLAS 체크리스트 PDF (4쪽)</li>
-        <li>즉시 다운로드 (249 KB zip)</li>
-        <li>본인 lab 내 측정 수 제한 없음</li>
-        <li>첫 budget에서 30분 이상 절약 못하면 14일 환불</li>
-      </ul>
-      <a class="buy" href="https://kyb8801.gumroad.com">Gumroad에서 구매 →</a>
     </div>
   </div>
 </section>
@@ -343,13 +319,12 @@ U (확장):            0.636 nm
 <footer>
   <div class="container">
     <div class="links">
-      <a href="https://kyb8801.gumroad.com">Gumroad 스토어</a>
       <a href="https://github.com/kyb8801/measurement-uncertainty-mcp">GitHub repo</a>
       <a href="https://yb-ai-hustle.beehiiv.com">Weekly 빌드 로그</a>
       <a href="index.html">English</a>
     </div>
     <p style="margin-top: 20px; font-size: 12px;">
-      © 2026 김용범 (Youngbum Kim). 단일 사용자 상용 라이센스. 계산은 JCGM 100:2008, JCGM 101:2008,
+      © 2026 김용범 (Youngbum Kim). MCP server 는 저장소 라이선스를 따릅니다. 계산은 JCGM 100:2008, JCGM 101:2008,
       ISO/IEC 17025:2017, ISO 10012:2026, ISO 14253-1:2017, ILAC G8:09/2019,
       KOLAS-G-001 을 따릅니다. 어떤 인정기구의 인증·보증도 받지 않았습니다.
     </p>

@@ -6,7 +6,7 @@
 [![MCPize](https://mcpize.com/badge/@kyb8801/measurement-uncertainty)](https://mcpize.com/mcp/measurement-uncertainty)
 [![GitHub stars](https://img.shields.io/github/stars/kyb8801/measurement-uncertainty-mcp?style=social)](https://github.com/kyb8801/measurement-uncertainty-mcp/stargazers)
 
-**The first Model Context Protocol server for GUM-compliant measurement uncertainty analysis. Built for ISO/IEC 17025 calibration labs, ISO 10012:2026 measurement management systems, and KOLAS / A2LA / UKAS accredited testing.**
+**A Model Context Protocol server for GUM measurement uncertainty analysis. Built for ISO/IEC 17025 calibration labs, ISO 10012:2026 measurement management systems, and KOLAS / A2LA / UKAS accredited testing.** No equivalent MCP server was found in a prior-art search (2026-07); that is not the same as being the first, and no claim of primacy is made here.
 
 Compute Type A/B uncertainties, combined standard uncertainty u_c, effective degrees of freedom ν_eff via Welch-Satterthwaite, expanded uncertainty U with coverage factor k, Monte Carlo propagation per JCGM 101:2008, and apply pre-built KOLAS-ready uncertainty budgets — directly from Claude Desktop, Cursor, Windsurf, or any MCP client. No spreadsheet. No vendor lock-in. Standards-referenceable to JCGM 100:2008.
 
@@ -158,7 +158,7 @@ MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
 
 - [x] Server skeleton
 - [x] Tool definitions (10 tools, JSON Schema)
-- [x] Math kernel (imports from `gumroad_products/python_data_analysis/05_uncertainty_analysis.py`)
+- [x] Math kernel
 - [x] MCPize deployment (live at `measurement-uncertainty.mcpize.run`, 2026-04-22)
 - [x] Public beta — 10 tools discovered and callable
 - [x] Cold-start optimization: scipy lazy import, cold p50 ~9× faster (#4)

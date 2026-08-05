@@ -21,7 +21,7 @@ GUM-compliant uncertainty analysis for AI agents, metrologists, and cal labs.
 
 ## Field: Long description (markdown-supported)
 ```markdown
-The first Model Context Protocol server for **GUM-compliant measurement uncertainty analysis** — the standard every calibration lab, semiconductor metrology team, and research group already has to use but spends hours on in Excel.
+A Model Context Protocol server for **GUM measurement uncertainty analysis** — the standard every calibration lab, semiconductor metrology team, and research group already has to use but spends hours on in Excel. No equivalent MCP server was found in a prior-art search (2026-07); no claim of being first is made.
 
 ### What you get
 - **7 tools** implementing the Guide to the Expression of Uncertainty in Measurement (JCGM 100:2008):
