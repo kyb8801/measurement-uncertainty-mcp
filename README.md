@@ -16,7 +16,7 @@ Now live on MCPize: **https://measurement-uncertainty.mcpize.run**
 
 ISO 10012:2026 was published in February 2026 — the first revision since 2003. The standard introduces a stronger, risk-based approach and adds practical guidance on **measurement uncertainty, Test Uncertainty Ratio (TUR), and decision rules with guard-banding** (aligned with ILAC G8 and ISO 14253-1).
 
-Most calibration labs are currently updating their Excel templates and uncertainty calculation workflows to match. This MCP server is the only Model Context Protocol implementation that ships these primitives end-to-end and is designed to plug directly into the lab's chat-based AI workflow. See [Issue #6](https://github.com/kyb8801/measurement-uncertainty-mcp/issues/6) for the upcoming KOLAS / A2LA / UKAS certificate auto-generation feature (Enterprise tier, Q3 2026 target).
+Most calibration labs are currently updating their Excel templates and uncertainty calculation workflows to match. This MCP server ships these primitives end-to-end and is designed to plug directly into the lab's chat-based AI workflow. The prior-art search below found no equivalent, but that is an absence of evidence, not proof of uniqueness. See [Issue #6](https://github.com/kyb8801/measurement-uncertainty-mcp/issues/6) for the upcoming KOLAS / A2LA / UKAS certificate auto-generation feature (Enterprise tier, Q3 2026 target).
 
 ## What this server does
 
@@ -169,7 +169,7 @@ MCPize revenue share: 85/15. Projected break-even: 5 Pro subscriptions.
 
 ## Differentiation
 
-Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrology`, `calibration`, `GUM`, `measurement`. **Zero results.** This is first-mover territory in a niche that has ~10,000 paying professionals globally.
+Searched mcp.so, Smithery, and MCPize on 2026-04-17 for: `uncertainty`, `metrology`, `calibration`, `GUM`, `measurement`. **Zero results** on that date, in those registries, for those terms. That is the whole claim — it does not establish that no such server exists anywhere, and no market-size estimate is offered here.
 
 ## Testing
 
